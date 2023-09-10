@@ -59,3 +59,7 @@
     updateRefs = true
 [init]
     defaultBranch = main
+[commit]
+    gpgSign = true
+[tag]
+    gpgSign = true
