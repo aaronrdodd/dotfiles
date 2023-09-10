@@ -1,30 +1,3 @@
-[core]
-    excludesFile = ~/.gitignore
-    attributesFile = ~/.gitattributes
-[include]
-    path = ~/.gitconfig.local
-[interactive]
-    singlekey = true
-[format]
-    signoff = true
-[color]
-    branch = true
-    diff = true
-    status = true
-[push]
-    recurseSubmodules = on-demand
-[user]
-    name = Aaron Dodd
-    email = 8947937+aardodd@users.noreply.github.com
-    signingkey = ~/.ssh/id_ed25519.pub
-[gpg]
-    format = ssh
-[diff]
-    compactionHeuristic = true
-    renames = true
-    colorMoved = default
-[merge]
-    conflictStyle = zdiff3
 [alias]
     backport = cherry-pick -x
     blame = -w -M
@@ -40,26 +13,52 @@
     reset-pr = reset --hard FETCH_HEAD
     uncommit = reset --soft HEAD
     update = !git pull && git submodule update --init --recursive
+[branch]
+    autosetuprebase = always
+[color]
+    branch = true
+    diff = true
+    status = true
+[commit]
+    gpgSign = true
+[core]
+    attributesFile = ~/.gitattributes
+    excludesFile = ~/.gitignore
+[diff]
+    colorMoved = default
+    compactionHeuristic = true
+    renames = true
+[format]
+    signoff = true
+[gpg]
+    format = ssh
+[include]
+    path = ~/.gitconfig.local
+[init]
+    defaultBranch = main
+[interactive]
+    singlekey = true
+[merge]
+    conflictStyle = zdiff3
+[pull]
+    autostash = true
+    rebase = true
+    twohead = ort
 [push]
-    default = simple
     autoSetupremote = true
+    default = simple
+    recurseSubmodules = on-demand
+[rebase]
+    autoSquash = true
+    autoStash = true
+    stat = true
+    updateRefs = true
 [rerere]
     autoUpdate = true
     enabled = true
-[branch]
-    autosetuprebase = always
-[pull]
-    rebase = true
-    autostash = true
-    twohead = ort
-[rebase]
-    stat = true
-    autoStash = true
-    autoSquash = true
-    updateRefs = true
-[init]
-    defaultBranch = main
-[commit]
-    gpgSign = true
 [tag]
     gpgSign = true
+[user]
+    email = 8947937+aardodd@users.noreply.github.com
+    name = Aaron Dodd
+    signingkey = ~/.ssh/id_ed25519.pub
