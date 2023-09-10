@@ -6,7 +6,13 @@ These dotfiles are managed using [chezmoi][]:
 
 ## How to use:
 
-1. Install chezmoi on your system.
+1. Install chezmoi on your system:
+
+```bash
+choco install chezmoi  # Windows with chocolatey
+sudo zypper in chezmoi # OpenSUSE
+```
+
 2. Run the following command to initialize the repository:
 
 ```bash
