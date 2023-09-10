@@ -20,7 +20,7 @@
     diff = true
     status = true
 [commit]
-    gpgSign = true
+    gpgSign = {{ .git.sign.force }}
 [core]
     attributesFile = ~/.gitattributes
     excludesFile = ~/.gitignore
@@ -31,7 +31,11 @@
 [format]
     signoff = true
 [gpg]
-    format = ssh
+    format = {{ .git.sign.format }}
+{{ if eq .git.sign.format "ssh" -}}
+[gpg "ssh"]
+    allowedSignersFile = {{ .chezmoi.homeDir }}/.config/git/allowed_signers
+{{ end -}}
 [include]
     path = ~/.gitconfig.local
 [init]
@@ -57,8 +61,12 @@
     autoUpdate = true
     enabled = true
 [tag]
-    gpgSign = true
+    gpgSign = {{ .git.sign.force }}
 [user]
-    email = 8947937+aardodd@users.noreply.github.com
+    {{ if .work -}}
+    email = {{ .email_work }}
+    {{ else -}}
+    email = {{ .email_personal }}
+    {{ end -}}
     name = Aaron Dodd
-    signingkey = ~/.ssh/id_ed25519.pub
+    signingkey = {{ .git.sign.key }}
