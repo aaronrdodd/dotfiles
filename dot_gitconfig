@@ -1,0 +1,59 @@
+[core]
+    excludesFile = ~/.gitignore
+    attributesFile = ~/.gitattributes
+[include]
+    path = ~/.gitconfig.local
+[interactive]
+    singlekey = true
+[format]
+    signoff = true
+[color]
+    branch = true
+    diff = true
+    status = true
+[push]
+    recurseSubmodules = on-demand
+[user]
+    name = Aaron Dodd
+    email = 8947937+aardodd@users.noreply.github.com
+    signingkey = ~/.ssh/id_ed25519.pub
+[gpg]
+    format = ssh
+[diff]
+    compactionHeuristic = true
+    renames = true
+    colorMoved = default
+[merge]
+    conflictStyle = zdiff3
+[alias]
+    backport = cherry-pick -x
+    blame = -w -M
+    comma = commit --amend
+    force-push = push --force-with-lease
+    get = clone --recursive
+    mr = !"mr() { git fetch origin merge-requests/$1/head:mr-$1; git checkout mr-$1; }; mr"
+    pr = !"pr() { git fetch origin pull/$1/head:pr-$1; git checkout pr-$1; }; pr"
+    publish = !git pull && git push
+    rb = rebase origin/head
+    recommit = !git commit -eF $(git rev-parse --git-dir)/COMMIT_EDITMSG
+    reset-mr = reset --hard FETCH_HEAD
+    reset-pr = reset --hard FETCH_HEAD
+    uncommit = reset --soft HEAD
+    update = !git pull && git submodule update --init --recursive
+[push]
+    default = simple
+    autoSetupremote = true
+[rerere]
+    autoUpdate = true
+    enabled = true
+[branch]
+    autosetuprebase = always
+[pull]
+    rebase = true
+    autostash = true
+    twohead = ort
+[rebase]
+    stat = true
+    autoStash = true
+    autoSquash = true
+    updateRefs = true
