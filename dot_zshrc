@@ -1,4 +1,3 @@
-
 export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.emacs.d/bin:/usr/local/bin:$PATH"
 
 # Helper function to check if a binary at PATH exists or a shell alias /
