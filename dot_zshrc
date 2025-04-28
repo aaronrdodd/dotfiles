@@ -1,0 +1,228 @@
+
+export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.emacs.d/bin:/usr/local/bin:$PATH"
+
+# Helper function to check if a binary at PATH exists or a shell alias /
+# function.
+function has() {
+  command -v "$1" &>/dev/null || type "$1" &>/dev/null;
+}
+
+# If `clear` or `cls` is not defined on shell then add a work around.
+if ! has clear; then
+  alias clear="printf '\033c\e[3J'";
+fi
+
+if ! has cls; then
+  alias cls="printf '\033c\e[3J'";
+fi
+
+
+###############################################################################
+## OPTIONS
+###############################################################################
+
+
+# Keybindings
+typeset -A key
+key=(
+    Home     "${terminfo[khome]}"
+    End      "${terminfo[kend]}"
+    Insert   "${terminfo[kich1]}"
+    Delete   "${terminfo[kdch1]}"
+    Up       "${terminfo[kcuu1]}"
+    Down     "${terminfo[kcud1]}"
+    Left     "${terminfo[kcub1]}"
+    Right    "${terminfo[kcuf1]}"
+    PageUp   "${terminfo[kpp]}"
+    PageDown "${terminfo[knp]}"
+)
+
+bindkey -e
+bindkey ${key[Home]}     beginning-of-line
+bindkey "^A"             beginning-of-line
+bindkey ${key[End]}      end-of-line
+bindkey "^E"             end-of-line
+bindkey ${key[Insert]}   overwrite-mode
+bindkey ${key[Delete]}   delete-char
+bindkey ${key[Left]}     backward-char
+bindkey ${key[Right]}    forward-char
+
+# History management
+if has atuin; then
+  eval "$(atuin init zsh)"
+fi
+
+# Tab completion
+zle -C complete-file complete-word _generic
+
+zstyle ':completion:*'				completer _complete _match _approximate
+zstyle ':completion:*:match:*'			original only
+zstyle ':completion:*:approximate:*'		max-errors 1 numeric
+zstyle ':completion:*:*'			original only
+zstyle ':completion:*:complete-file::::'	completer _files
+zstyle ':completion:*'				completer _complete _ignored _files
+
+autoload -Uz compinit
+compinit
+
+setopt complete_aliases
+setopt hash_list_all
+setopt menu_complete
+
+# Directory navigation
+setopt auto_cd
+setopt auto_pushd
+setopt chase_links
+setopt pushd_silent
+setopt pushd_to_home
+
+# Globbing
+setopt extended_glob
+setopt glob_dots
+setopt mark_dirs
+setopt multibyte
+setopt null_glob
+
+# Miscellaneous
+setopt correct
+
+
+###############################################################################
+## PROMPT
+###############################################################################
+
+
+function __prompt_precmd() {
+  local command_status=$?
+  local sadface=$([ "$command_status" != 0 ] && echo " ${fred}:(${fdefault}")
+  local dircolour=$([ -w "$(pwd)" ] && echo $fbcyan || fbref)
+
+  # Directory
+  local prompt_dir=" ${dircolour}%2~${fdefault}"
+
+  # Host
+  local prompt_host="${fbyellow}%m${fbdefault}"
+
+  # Tag
+  local prompt_tag=$([ ! -z $PROMPT_TAG ] && echo " ${fbmagenta}{${PROMPT_TAG}}${fdefault}")
+
+
+  # Git
+  local prompt_git=""
+  if git status &>/dev/null; then
+    local ref=$(git symbolic-ref HEAD 2> /dev/null) || return 1
+    local branch=${ref#refs/heads/}
+
+    prompt_git=" ${fgreen}[${branch}]${fdefault}"
+  fi
+
+  export PROMPT="${prompt_host}${prompt_tag}${prompt_git}${prompt_dir}${sadface} ${fbblue}>>>${fdefault}  "
+# export RPROMPT="${dircolour}%2~${fdefault}"
+}
+
+# Push to the prompt tag.
+function ptag_push() {
+  if [[ -z $PROMPT_TAG ]]; then
+    PROMPT_TAG=$1
+  else
+    PROMPT_TAG=$PROMPT_TAG/$1
+  fi
+}
+
+# Pop from the prompt tag.
+function ptag_pop() {
+  PROMPT_TAG=$(dirname $PROMPT_TAG)
+  if [[ "$PROMPT_TAG" == "." ]]; then
+    PROMPT_TAG=""
+  fi
+}
+
+export PS2="${fblue}%B%_%b >${fdefault} "
+export PS3="${fyellow}%Bselect%b:${fdefault} "
+
+precmd_functions+=(__prompt_precmd)
+
+
+###############################################################################
+## FUNCTIONS & ALIASES
+###############################################################################
+
+
+# Display information about the state of the world.
+function status() {
+  clear
+
+  if has fortune; then
+    fortune | sed "s:^:> :"
+  fi
+
+  echo
+}
+
+# Run and disown a program.
+function r()
+{
+    $* &>/dev/null &
+    disown %%
+}
+
+# Run and disown a program, then terminate the shell.
+function re()
+{
+    $* &>/dev/null &
+    disown %%
+    exit
+}
+
+# Fuzzy finding for files and directories with `fzf`.
+if has fzf; then
+  function __fzf_any() {
+    local dir="${1:-.}"
+    find $dir | fzf "$2"
+  }
+
+  function __fzf_file() {
+    local dir="${1:-.}"
+    find $dir -type f | fzf "$2"
+  }
+
+  function __fzf_dir() {
+    local dir="${1:-.}"
+    find $dir -type d | fzf
+  }
+
+  alias -g ,a='$(__fzf_any  . -m)'
+  alias -g ,f='$(__fzf_file . -m)'
+  alias -g ,d='$(__fzf_dir  . -m)'
+  alias -g ,=,f
+  alias -g '.F'="| fzf"
+fi
+
+# Short aliases for common commands.
+alias c='clear'
+alias e='exit'
+alias o=$EDITOR
+alias g='git'
+alias m='mosh'
+alias '?'='status'
+alias G=grep
+
+# Pipelining commands.
+alias -g '.G'='| grep'
+alias -g '.S'='| sed'
+alias -g '.C'='| cut'
+alias -g '.A'='| awk'
+alias -g '.U'='| sort | uniq'
+alias -g '.L'='2>&1 | less'
+alias -g '.H'='2>&1 | head'
+alias -g '.T'='2>&1 | tail'
+alias -g '.1'='2>&1'
+
+# Basic commands with some powerups.
+alias cp='cp -rpv'
+alias mkdir='mkdir -p'
+alias mv='mv -v'
+
+# Miscellaneous
+alias ta='tmux attach-session -d -t'
+alias reload='exec zsh'
