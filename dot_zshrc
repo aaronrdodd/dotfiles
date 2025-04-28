@@ -220,8 +220,12 @@ alias -g '.1'='2>&1'
 
 # Basic commands with some powerups.
 alias cp='cp -rpv'
+alias df='df -h'
+alias du='du -shc'
+alias free='free -ht'
 alias mkdir='mkdir -p'
 alias mv='mv -v'
+alias su='sudo su - '
 
 # Miscellaneous
 alias ta='tmux attach-session -d -t'
