@@ -169,6 +169,7 @@
     enabled = true
 
 [tag]
+    forceSignAnnotated = {{ .git.signing.annotated_tags }}
     gpgSign = {{ .git.signing.tags }}
     sort = version:refname
 
