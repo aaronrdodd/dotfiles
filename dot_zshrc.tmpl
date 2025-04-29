@@ -16,6 +16,7 @@ if ! has cls; then
 fi
 
 {{- if (and .ssh.agent.enable (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft")) }}
+# Workaround for system level SSH access on Windows / WSL2
 alias ssh-add="ssh-add.exe"
 alias ssh="ssh.exe"
 {{- end }}
