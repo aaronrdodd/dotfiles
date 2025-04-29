@@ -22,7 +22,6 @@
 
     ssh.agent.provider.choice = {{ promptChoice "What SSH provider would you like to use" $defaultSshProviders | quote }}
 
-    ssh.agent.provider.onepassword.enable = true
     ssh.agent.provider.onepassword.signing.linux.path = "/opt/1Password/op-ssh-sign"
     ssh.agent.provider.onepassword.signing.windows.path = "{{ .chezmoi.homeDir }}/AppData/Local/1Password/app/8/op-ssh-sign.exe"
 

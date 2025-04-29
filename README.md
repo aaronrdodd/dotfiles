@@ -78,6 +78,15 @@ to enter a username and password.
 
 - Install dotfiles with the following command:
 
-```pwsh
-chezmoi init aaron-dodd --apply --ssh
+```bash
+# Initialize the dotfiles using the following commands:
+chezmoi init aaron-dodd
+chezmoi init aaron-dodd --ssh
+
+# Use the guided wizard to make common choices
+# Edit .config/chezmoi/chezmoi.toml if you need to make more esoteric edits
+
+chezmoi diff
+chezmoi apply
 ```
+
