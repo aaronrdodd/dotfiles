@@ -1,13 +1,14 @@
 {{- $defaultName := "Aaron Dodd" -}}
 {{- $defaultEmail := "me@aaronrdodd.com" -}}
-{{- $defaultGithubUsername := "aaronrdodd" }}
+{{- $defaultGithubUsername := "aaronrdodd" -}}
+{{- $defaultSshProviders := list "onepassword" "keepassxc" "system" -}}
 
 [data]
     work_device = {{ promptBool "Is this a work device" false | quote }}
 
     user.fullname = {{ promptString "What is your full name" $defaultName | quote }}
     user.email = {{ promptString "What is your email" $defaultEmail | quote }}
-    user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH+VPgzwtfVo/JEFBg97ngn7cqqPMUyVmuHKUJwyj0/+"
+    user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILJrQS1eSGXVHvQSkIPJN28BwJSEkYn6bJYTXx2SCB/A"
 
     git.github.username = {{ promptString "What is your GitHub username" $defaultGithubUsername | quote }}
     git.signing.format = "ssh"
@@ -18,6 +19,8 @@
     beyondcompare.windows.path = "C:/Program Files/Beyond Compare 5/bcomp.exe"
 
     ssh.agent.enable = true
+
+    ssh.agent.provider.choice = {{ promptChoice "What SSH provider would you like to use" $defaultSshProviders | quote }}
 
     ssh.agent.provider.onepassword.enable = true
     ssh.agent.provider.onepassword.signing.linux.path = "/opt/1Password/op-ssh-sign"
