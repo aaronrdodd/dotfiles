@@ -160,6 +160,14 @@ function status() {
     fortune | sed "s:^:> :"
   fi
 
+  if has hledger; then
+    echo "\n$(date +%B) Budget:"
+
+    local next_month=$(date --date=+1month +"%Y-%m-01")
+
+    hledger balance -N -H --end=$next_month --tree assets:budget | sed 1d
+  fi
+
   echo
 }
 
