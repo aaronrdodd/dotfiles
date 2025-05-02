@@ -1,7 +1,7 @@
 {{- $defaultName := "Aaron Dodd" -}}
 {{- $defaultEmail := "me@aaronrdodd.com" -}}
 {{- $defaultGithubUsername := "aaronrdodd" -}}
-{{- $defaultSshProviders := list "onepassword" "keepassxc" "system" -}}
+{{- $defaultSshProviders := list "onepassword" "system" -}}
 
 [data]
     work_device = {{ promptBool "Is this a work device" false | quote }}
