@@ -107,12 +107,16 @@
 [gpg "ssh"]
     allowedSignersFile = "{{ .chezmoi.homeDir }}/.config/git/allowed_signers"
 
-{{- if (and (eq .ssh.agent.provider.choice "onepassword") (eq .chezmoi.os "linux")) }}
+{{- if (and (eq .ssh.agent.provider.choice "onepassword") (eq .chezmoi.os "linux") (not (.chezmoi.kernel.osrelease | lower | contains "microsoft"))) }}
     program = "{{ .ssh.agent.provider.onepassword.signing.linux.path }}"
 {{- end -}}
 
 {{ if (and (eq .ssh.agent.provider.choice "onepassword") (eq .chezmoi.os "windows")) }}
     program = "{{ .ssh.agent.provider.onepassword.signing.windows.path }}"
+{{- end -}}
+
+{{ if (and (eq .ssh.agent.provider.choice "onepassword") (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft")) }}
+    program = "{{ .ssh.agent.provider.onepassword.signing.wsl.path }}"
 {{- end -}}
 {{ end }}
 
