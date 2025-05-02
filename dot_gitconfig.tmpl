@@ -9,6 +9,8 @@
     out = "log \"@{u}..\""
     pr = !"fun() { git fetch origin pull/$1/head:pr-$1; git checkout pr-$1; }; fun"
     publish = !"git pull && git push"
+    qp = "!fun() { git add . && git commit -m \"$1\" && git push; }; fun"
+    qpk = "!fun() { git add -u && git commit -m \"$1\" && git push; }; fun"
     rb = "rebase origin/head"
     rebase-upstream = !"fun() { git branch --set-upstream-to=$1; }; fun"
     recommit = !"git commit -eF $(git rev-parse --git-dir)/COMMIT_EDITMSG"
