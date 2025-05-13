@@ -121,6 +121,14 @@
 {{ if (and (eq .ssh.agent.provider.choice "onepassword") (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft")) }}
     program = "{{ .ssh.agent.provider.onepassword.signing.wsl.path }}"
 {{- end -}}
+
+{{ if (and (eq .ssh.agent.provider.choice "system") (eq .chezmoi.os "windows")) }}
+    program = "{{ .ssh.agent.service.signing.windows.path }}"
+{{- end -}}
+
+{{ if (and (eq .ssh.agent.provider.choice "system") (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft")) }}
+    program = "{{ .ssh.agent.service.signing.wsl.path }}"
+{{- end -}}
 {{ end }}
 
 [help]
