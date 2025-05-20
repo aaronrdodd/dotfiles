@@ -56,6 +56,11 @@ if has atuin; then
   eval "$(atuin init zsh)"
 fi
 
+# Prompt
+if has starship; then
+  eval "$(starship init zsh)"
+fi
+
 # Tab completion
 zle -C complete-file complete-word _generic
 
@@ -89,62 +94,6 @@ setopt null_glob
 
 # Miscellaneous
 setopt correct
-
-
-###############################################################################
-## PROMPT
-###############################################################################
-
-
-function __prompt_precmd() {
-  local command_status=$?
-  local sadface=$([ "$command_status" != 0 ] && echo " ${fred}:(${fdefault}")
-  local dircolour=$([ -w "$(pwd)" ] && echo $fbcyan || fbref)
-
-  # Directory
-  local prompt_dir=" ${dircolour}%2~${fdefault}"
-
-  # Host
-  local prompt_host="${fbyellow}%m${fbdefault}"
-
-  # Tag
-  local prompt_tag=$([ ! -z $PROMPT_TAG ] && echo " ${fbmagenta}{${PROMPT_TAG}}${fdefault}")
-
-
-  # Git
-  local prompt_git=""
-  if git status &>/dev/null; then
-    local ref=$(git symbolic-ref HEAD 2> /dev/null) || return 1
-    local branch=${ref#refs/heads/}
-
-    prompt_git=" ${fgreen}[${branch}]${fdefault}"
-  fi
-
-  export PROMPT="${prompt_host}${prompt_tag}${prompt_git}${prompt_dir}${sadface} ${fbblue}>>>${fdefault}  "
-# export RPROMPT="${dircolour}%2~${fdefault}"
-}
-
-# Push to the prompt tag.
-function ptag_push() {
-  if [[ -z $PROMPT_TAG ]]; then
-    PROMPT_TAG=$1
-  else
-    PROMPT_TAG=$PROMPT_TAG/$1
-  fi
-}
-
-# Pop from the prompt tag.
-function ptag_pop() {
-  PROMPT_TAG=$(dirname $PROMPT_TAG)
-  if [[ "$PROMPT_TAG" == "." ]]; then
-    PROMPT_TAG=""
-  fi
-}
-
-export PS2="${fblue}%B%_%b >${fdefault} "
-export PS3="${fyellow}%Bselect%b:${fdefault} "
-
-precmd_functions+=(__prompt_precmd)
 
 
 ###############################################################################

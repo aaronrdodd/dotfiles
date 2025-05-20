@@ -1,4 +1,5 @@
 # Machine Setup Instructions
+
 ## Microsoft Windows
 
 - Install the Microsoft Store if it doesn't already exist using the following
@@ -76,12 +77,36 @@ wsl --install --distribution Ubuntu
 NOTE: This operation can take a while. When you restart your will be prompted
 to enter a username and password.
 
+### WSL / Ubuntu / Linux
+
+- Run the following commands to setup your linux environment:
+
+```bash
+# Update your linux distro
+sudo apt update && sudo apt upgrade
+
+# Install fzf and zsh
+sudo apt install fzf zsh
+
+# Install atuin
+curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+
+# Install chezmoi
+curl --proto '=https' --tlsv1.2 -LsSf https://get.chezmoi.io | sh
+
+# Install starship
+curl -sS https://starship.rs/install.sh | sh
+
+# Set ZSH as default shell
+sudo chsh -s /bin/zsh $USERNAME
+```
+
 - Install dotfiles with the following command:
 
 ```bash
 # Initialize the dotfiles using the following commands:
-chezmoi init aaron-dodd
-chezmoi init aaron-dodd --ssh
+chezmoi init aaronrdodd
+chezmoi init aaronrdodd --ssh
 
 # Use the guided wizard to make common choices
 # Edit .config/chezmoi/chezmoi.toml if you need to make more esoteric edits
