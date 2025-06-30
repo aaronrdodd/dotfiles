@@ -52,6 +52,7 @@ bindkey ${key[Left]}     backward-char
 bindkey ${key[Right]}    forward-char
 
 # History management
+. "$HOME/.atuin/bin/env"
 if has atuin; then
   eval "$(atuin init zsh)"
 fi
@@ -191,3 +192,6 @@ alias su='sudo su - '
 # Miscellaneous
 alias ta='tmux attach-session -d -t'
 alias reload='exec zsh'
+
+# Starship
+eval "$(starship init zsh)"
