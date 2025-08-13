@@ -97,6 +97,9 @@ curl --proto '=https' --tlsv1.2 -LsSf https://get.chezmoi.io | sh
 # Install starship
 curl -sS https://starship.rs/install.sh | sh
 
+# Install fnm
+curl -fsSL https://fnm.vercel.app/install | bash
+
 # Set ZSH as default shell
 sudo chsh -s /bin/zsh $USERNAME
 ```
