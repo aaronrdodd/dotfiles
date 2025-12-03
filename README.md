@@ -118,3 +118,10 @@ chezmoi diff
 chezmoi apply
 ```
 
+If using WSL2 make sure to update the `/etc/wsl.conf` as follows:
+
+```bash
+[interop]
+enabled = true
+```
+
