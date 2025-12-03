@@ -6,3 +6,13 @@ wsl.conf
 {{ if ne .chezmoi.os "windows" }}
 Documents/PowerShell/Microsoft.PowerShell_profile.ps1
 {{ end }}
+
+{{ if (and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft")) }}
+.config/plasma-workspace
+{{ end }}
+
+{{ if eq .chezmoi.os "windows" }}
+.config/plasma-workspace
+.zshrc
+{{ end }}
+
