@@ -1,6 +1,7 @@
 LICENSE
-pre-push-hook
 README.md
+pre-push-hook
+wsl.conf
 
 {{ if ne .chezmoi.os "windows" }}
 Documents/PowerShell/Microsoft.PowerShell_profile.ps1
