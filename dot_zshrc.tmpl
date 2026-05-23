@@ -52,7 +52,10 @@ bindkey ${key[Left]}     backward-char
 bindkey ${key[Right]}    forward-char
 
 # History management
-. "$HOME/.atuin/bin/env"
+if [ -d "$HOME/.atuin/bin" ]; then
+  . "$HOME/.atuin/bin/env"
+fi
+
 if has atuin; then
   eval "$(atuin init zsh)"
 fi
